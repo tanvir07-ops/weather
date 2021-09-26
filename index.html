@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Rifat's | Weather</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="shortcut icon" href="images/favicon" type="image/x-icon">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background: url(images/bg-image.jpg) no-repeat center center/cover;
+            height:100vh;
+           
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <form class="col-md-6 m-auto py-5">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" id = "text-input" placeholder="Enter a location for Weather ...">
+                <div class="input-group-append">
+                    <button id = "btn-search" type="button" class="btn btn-danger">Search</button>
+                </div>
+            </div>
+        </form>
+        <div class="weather-status text-white text-center">
+            <img id = "icon-change" src="https://openweathermap.org/img/wn/02d@2x.png" alt="">
+            <h1 id = 'name'></h1>
+            <h3><span id = "tem"></span></h3>
+            <h1 id = "des" class="lead"></h1>
+        </div>
+    </div>
+
+ 
+    <script>
+       document.getElementById("btn-search").addEventListener("click", function(){
+             const text = document.getElementById("text-input").value;
+             if(text === ""){
+                 alert("যেকোনো একটা দেশ বা জেলার নাম দেন ওস্তাদ ! ");
+             }
+
+             else{
+                 console.log(text);
+                 document.getElementById("text-input").value = "";
+
+                 fetch('https://api.openweathermap.org/data/2.5/weather?q='+text+'&appid=3b551b57c383993273a985d14a369d1e')
+                 .then(response => response.json())
+                 .then(data => {
+                     const cityName = data.name;
+                     const tem = data.main.temp;
+                     const temp = Math.round(tem - 273.15);
+                     const description = data.weather[0].description;
+                     const icon = data.weather[0].icon;
+
+                     if(tem.value===""){
+                        document.getElementById("tem").style.display="none";
+                                         }
+
+                     document.getElementById("name").innerHTML = cityName;
+                     document.getElementById("tem").innerHTML = `${temp}&deg;C`;
+                     document.getElementById("des").innerHTML = description;
+                     document.getElementById("icon-change").innerHTML = icon;
+                    
+                    
+                    console.log(data);
+                 })
+                 .catch(error => alert('ভাই একটা দেশ এর নাম ভালো মতো লিখেন !'));
+        
+             }
+
+
+
+
+
+       })
+
+
+
+    </script>
+
+
+</body>
+
+</html>
